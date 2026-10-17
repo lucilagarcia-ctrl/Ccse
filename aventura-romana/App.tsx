@@ -6,7 +6,7 @@ import { ActivityIndicator, Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { RomanBackground } from './src/components/RomanBackground';
 import { Lang } from './src/i18n';
-import { buildSession, Session } from './src/questions/session';
+import { buildSession, PASS_MARK, Session } from './src/questions/session';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { QuizScreen } from './src/screens/QuizScreen';
 import { ResultScreen } from './src/screens/ResultScreen';
@@ -27,12 +27,12 @@ function newSession(seenFacts: number[]): Session {
 /** Sólo en desarrollo web: ?demo=win / ?demo=lose abre directamente la pantalla final. */
 function initialScreen(): Screen {
   const demo = __DEV__ && Platform.OS === 'web' ? new URLSearchParams(window.location.search).get('demo') : null;
-  if (demo === 'win') return { name: 'result', correct: 12, total: 15 };
-  if (demo === 'lose') return { name: 'result', correct: 7, total: 15 };
+  if (demo === 'win') return { name: 'result', correct: 12, wrong: 3, total: 15 };
+  if (demo === 'lose') return { name: 'result', correct: 4, wrong: 6, total: 15 };
   return { name: 'home' };
 }
 
-type Screen = { name: 'home' } | { name: 'quiz'; session: Session; round: number } | { name: 'result'; correct: number; total: number };
+type Screen = { name: 'home' } | { name: 'quiz'; session: Session; round: number } | { name: 'result'; correct: number; wrong: number; total: number };
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Cinzel_700Bold, Cinzel_900Black, Fredoka_500Medium, Fredoka_700Bold });
@@ -82,9 +82,9 @@ export default function App() {
             session={screen.session}
             onFactSeen={(id) => update({ seenFacts: [...progress.seenFacts, id].slice(-18) })}
             onQuit={() => setScreen({ name: 'home' })}
-            onFinish={(correct) => {
-              update({ coins: progress.coins + correct, crowns: progress.crowns + (correct >= 10 ? 1 : 0) });
-              setScreen({ name: 'result', correct, total: screen.session.questions.length });
+            onFinish={(correct, wrong) => {
+              update({ coins: progress.coins + correct, crowns: progress.crowns + (correct >= PASS_MARK ? 1 : 0) });
+              setScreen({ name: 'result', correct, wrong, total: screen.session.questions.length });
             }}
           />
         )}
@@ -92,6 +92,7 @@ export default function App() {
           <ResultScreen
             lang={lang}
             correct={screen.correct}
+            wrong={screen.wrong}
             total={screen.total}
             onAgain={() => setScreen({ name: 'quiz', session: newSession(progress.seenFacts), round: Date.now() })}
             onHome={() => setScreen({ name: 'home' })}

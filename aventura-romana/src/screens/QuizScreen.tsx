@@ -12,9 +12,9 @@ import { SpellGame } from '../games/SpellGame';
 import { TapGame } from '../games/TapGame';
 import { TrueFalseGame } from '../games/TrueFalseGame';
 import { VideoGame } from '../games/VideoGame';
-import { Lang, subjectName, ui } from '../i18n';
+import { Lang, subjectName, t, ui } from '../i18n';
 import { Fact } from '../questions/facts';
-import { Session } from '../questions/session';
+import { MAX_WRONG, Session } from '../questions/session';
 import { Question } from '../questions/types';
 import { say, stopSpeech } from '../sound';
 import { colors, fonts, shadow } from '../theme';
@@ -24,7 +24,8 @@ type Props = {
   session: Session;
   onFactSeen: (id: number) => void;
   onQuit: () => void;
-  onFinish: (correct: number) => void;
+  /** Termina al responder los 15 retos o al 6.º fallo. */
+  onFinish: (correct: number, wrong: number) => void;
 };
 
 const subjectIcon: Record<string, string> = { math: '🔢', history: '📜', rome: '🏛️', english: '🇬🇧', catalan: '🗣️' };
@@ -61,8 +62,10 @@ export function QuizScreen({ lang, session, onFactSeen, onQuit, onFinish }: Prop
   const next = useCallback(() => {
     if (fact) return;
     const done = index + 1;
-    if (done >= questions.length) {
-      onFinish(results.filter(Boolean).length);
+    const correct = results.filter(Boolean).length;
+    const wrong = results.length - correct;
+    if (done >= questions.length || wrong > MAX_WRONG) {
+      onFinish(correct, wrong);
       return;
     }
     const f = session.facts[done];
@@ -165,7 +168,7 @@ export function QuizScreen({ lang, session, onFactSeen, onQuit, onFinish }: Prop
 
       {answered && (
         <View style={[styles.feedback, { backgroundColor: lastOk ? colors.ok : colors.terracotta }]}>
-          <Text style={styles.feedbackText}>{lastOk ? `🎉 ${ui.wellDone[lang]}` : `💪 ${ui.oops[lang]}`}</Text>
+          <Text style={styles.feedbackText}>{lastOk ? `🎉 ${t('wellDone', lang)}` : `💪 ${ui.oops[lang]}`}</Text>
           <BigButton label={`${ui.next[lang]} ➜`} color={colors.gold} shade={colors.goldDark} textColor={colors.ink} onPress={next} />
         </View>
       )}

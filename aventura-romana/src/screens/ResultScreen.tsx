@@ -3,31 +3,31 @@ import { StyleSheet, Text, View } from 'react-native';
 import { BigButton } from '../components/BigButton';
 import { Confetti } from '../components/Confetti';
 import { Romanito } from '../components/Romanito';
-import { Lang, ui } from '../i18n';
+import { Lang, t, ui } from '../i18n';
 import { PASS_MARK } from '../questions/session';
 import { play, say } from '../sound';
 import { colors, fonts, shadow } from '../theme';
 
-type Props = { lang: Lang; correct: number; total: number; onAgain: () => void; onHome: () => void };
+type Props = { lang: Lang; correct: number; wrong: number; total: number; onAgain: () => void; onHome: () => void };
 
 /**
- * Final de la partida. Con 15 preguntas, "10 o más bien" y "más de 5 mal" son exactamente
- * los dos casos posibles: o sale el emperador feliz, o el legionario triste que anima.
+ * Final de la partida. Se gana con 10 aciertos o más; al 6.º fallo la partida se corta
+ * y sale el legionario triste que anima a intentarlo otra vez.
  */
-export function ResultScreen({ lang, correct, total, onAgain, onHome }: Props) {
+export function ResultScreen({ lang, correct, wrong, total, onAgain, onHome }: Props) {
   const won = correct >= PASS_MARK;
 
   useEffect(() => {
     play(won ? 'fanfare' : 'sad');
-    const t = setTimeout(() => say(`${won ? ui.winTitle[lang] : ui.loseTitle[lang]} ${won ? ui.winText[lang] : ui.loseText[lang]}`, lang), 900);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => say(`${won ? t('winTitle', lang) : t('loseTitle', lang)} ${won ? ui.winText[lang] : ui.loseText[lang]}`, lang), 900);
+    return () => clearTimeout(timer);
   }, [won, lang]);
 
   return (
     <View style={styles.wrap}>
       {won && <Confetti />}
       <View style={styles.card}>
-        <Text style={[styles.title, { color: won ? colors.purpleDark : colors.terracottaDark }]}>{won ? ui.winTitle[lang] : ui.loseTitle[lang]}</Text>
+        <Text style={[styles.title, { color: won ? colors.purpleDark : colors.terracottaDark }]}>{won ? t('winTitle', lang) : t('loseTitle', lang)}</Text>
         <View style={styles.heroRow}>
           {won ? (
             <>
@@ -42,7 +42,10 @@ export function ResultScreen({ lang, correct, total, onAgain, onHome }: Props) {
         <Text style={styles.text}>{won ? ui.winText[lang] : ui.loseText[lang]}</Text>
         <View style={styles.scoreRow}>
           <Text style={styles.score}>
-            ✅ {correct} / {total}
+            ✅ {correct}
+          </Text>
+          <Text style={styles.score}>
+            ❌ {wrong}
           </Text>
           <Text style={styles.score}>+{correct} 🪙</Text>
         </View>

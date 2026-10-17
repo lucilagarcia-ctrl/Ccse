@@ -13,8 +13,8 @@
 | Mínimo 10 bien | 10 o más aciertos = partida ganada |
 | Más visual que escrito | Emojis grandes, banderas y relojes dibujados, frases cortas y **todo se lee en voz alta** |
 | Verdadero/falso, opción múltiple, vídeos, cuentas, juegos | 8 tipos de reto: V/F, opciones, cuentas (con dibujos o teclado), "vídeos" animados, memoria, ordenar, tocar todos, deletrear (+ escuchar) |
-| 10 bien → romano felicitando | Legionario y emperador saltando, confeti, trofeo y fanfarria |
-| Más de 5 mal → romano triste que anima | Legionario triste (con lagrimita) y mensaje de ánimo, botón grande "Jugar otra vez" |
+| 10 bien → romano felicitando | Legionario y emperador saltando, confeti, trofeo y fanfarria: «¡Ave, Tiano!» |
+| Más de 5 mal → romano triste que anima | En el 6.º fallo la partida termina y sale el legionario triste (con lagrimita) con mensaje de ánimo y botón grande "Jugar otra vez" |
 | Romanitos con curiosidades de Roma | 22 curiosidades (garum, testudo, termas, Tarraco…); salen 3 por partida y se evita repetir las ya vistas |
 | iOS y Android | Expo / React Native: el mismo código genera las dos apps |
 | En mi GitHub | Carpeta `aventura-romana/` + flujos de GitHub Actions que generan el APK y el IPA |
@@ -72,11 +72,11 @@ pingüinos, Iguazú.
 tiempo y el entorno. Por eso la historia es de "antes y ahora", tradiciones y la Hispania romana.
 Colón (1492) y Don Quijote son lo más "de libro".
 
-**H. "Cada vez que entres, sesión nueva".** Si sale a mitad de partida, esa partida se pierde y la próxima
-es nueva (tal como se pidió). Si solo cambia de app un momento y vuelve, sigue donde estaba. Ver pregunta 6.
+**H. "Cada vez que entres, sesión nueva".** ✅ Decidido: si cierra la app a mitad de partida, el progreso se
+pierde y empieza de nuevo. (Si solo cambia de app un momento sin cerrarla, sigue donde estaba.)
 
-**I. "Romano triste si responde más de 5 mal".** Puede entenderse como "en cuanto falle la 6.ª" (cortando
-la partida) o "al final". Elegí **al final**, para que siempre juegue las 15 y la sesión no se corte.
+**I. "Romano triste si responde más de 5 mal".** ✅ Decidido: **en el 6.º fallo** la partida termina en ese
+momento (después de ver la respuesta correcta) y sale el romano triste.
 
 **J. App iOS "instalable".** Para instalar en un iPhone sin pasar por el App Store, Apple obliga a firmar
 la app: con Apple ID gratis caduca cada 7 días, y con cuenta de desarrollador cuesta 99 €/año. Está
@@ -98,6 +98,12 @@ una vez (luego funciona sin internet).
   en el navegador en los 3 idiomas, con internet bloqueado.
 
 ## 5. Preguntas sobre la lógica de la app
+
+**Respuestas recibidas:** se pasa a `main` ✅ · 15 retos por partida, sin modo libre ✅ · los romanos le llaman
+**Tiano** ✅ · no hay temario del cole (se mantiene el currículo general) ✅ · si cierra la app se pierde la partida ✅ ·
+romano triste en el 6.º fallo ✅.
+
+Preguntas originales:
 
 1. **Duración**: ¿prefieres **más retos** por partida (por ejemplo 20) o mantener 15? ¿O un modo
    "entrenamiento" sin límite después de terminar?

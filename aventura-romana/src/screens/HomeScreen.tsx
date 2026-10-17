@@ -2,13 +2,12 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { BigButton } from '../components/BigButton';
 import { Flag } from '../components/Flags';
 import { Romanito } from '../components/Romanito';
-import { Lang, LANGS, ui } from '../i18n';
+import { Lang, LANGS, t, ui } from '../i18n';
 import { play, say } from '../sound';
 import { colors, fonts, shadow } from '../theme';
 
 type Props = { lang: Lang; coins: number; crowns: number; onLang: (l: Lang) => void; onPlay: () => void };
 
-const hello: Record<Lang, string> = { es: '¡Hola! ¡Ave!', en: 'Hello! Ave!', ca: 'Hola! Ave!' };
 
 export function HomeScreen({ lang, coins, crowns, onLang, onPlay }: Props) {
   return (
@@ -27,6 +26,7 @@ export function HomeScreen({ lang, coins, crowns, onLang, onPlay }: Props) {
       <View style={styles.banner}>
         <Text style={styles.spqr}>S · P · Q · R</Text>
         <Text style={styles.title}>{ui.appTitle[lang]}</Text>
+        <Text style={styles.hello}>{t('hello', lang)} 👋</Text>
       </View>
 
       <View style={styles.heroes}>
@@ -46,7 +46,7 @@ export function HomeScreen({ lang, coins, crowns, onLang, onPlay }: Props) {
               onPress={() => {
                 play('pop');
                 onLang(l);
-                say(hello[l], l);
+                say(t('hello', l), l);
               }}
               style={[styles.flagBtn, l === lang && styles.flagOn]}
             >
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
   banner: { backgroundColor: colors.marble, borderRadius: 20, borderWidth: 4, borderColor: colors.gold, paddingHorizontal: 22, paddingVertical: 10, alignItems: 'center', ...shadow },
   spqr: { fontFamily: fonts.titleBold, color: colors.red, fontSize: 14, letterSpacing: 3 },
   title: { fontFamily: fonts.title, color: colors.purpleDark, fontSize: 32, textAlign: 'center' },
+  hello: { fontFamily: fonts.bodyBold, color: colors.terracottaDark, fontSize: 22, textAlign: 'center' },
   heroes: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'center', gap: 0 },
   card: { backgroundColor: 'rgba(251,246,236,0.95)', borderRadius: 24, padding: 14, width: '100%', maxWidth: 440, ...shadow },
   cardTitle: { fontFamily: fonts.bodyBold, fontSize: 20, color: colors.ink, textAlign: 'center', marginBottom: 10 },

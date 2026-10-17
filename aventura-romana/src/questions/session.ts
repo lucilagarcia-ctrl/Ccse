@@ -10,6 +10,8 @@ export type Session = { questions: Question[]; facts: Record<number, Fact> };
 
 export const SESSION_SIZE = 15;
 export const PASS_MARK = 10;
+/** Al 6.º fallo la partida termina y sale el romano triste. */
+export const MAX_WRONG = 5;
 
 /** Reparto por partida: 5 mates, 3 historia (≥1 Argentina, ≥1 España/Cataluña), 2 Roma, 3 inglés, 2 catalán. */
 const PLAN = { math: 5, history: 3, rome: 2, english: 3, catalan: 2 };

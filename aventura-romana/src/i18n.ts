@@ -1,4 +1,7 @@
 export type Lang = 'es' | 'en' | 'ca';
+
+/** Nombre del jugador: los romanos le llaman por su nombre. */
+export const PLAYER_NAME = 'Tiano';
 export type L = Record<Lang, string>;
 
 export const LANGS: Lang[] = ['es', 'en', 'ca'];
@@ -20,7 +23,7 @@ export const ui = {
   next: { es: 'Seguir', en: 'Next', ca: 'Endavant' },
   true: { es: 'Verdadero', en: 'True', ca: 'Veritat' },
   false: { es: 'Falso', en: 'False', ca: 'Fals' },
-  wellDone: { es: '¡Muy bien!', en: 'Well done!', ca: 'Molt bé!' },
+  wellDone: { es: '¡Muy bien, {name}!', en: 'Well done, {name}!', ca: 'Molt bé, {name}!' },
   oops: { es: '¡Casi!', en: 'Almost!', ca: 'Gairebé!' },
   theAnswerWas: { es: 'La respuesta era:', en: 'The answer was:', ca: 'La resposta era:' },
   didYouKnow: { es: '¿Sabías que…?', en: 'Did you know…?', ca: 'Sabies que…?' },
@@ -29,19 +32,19 @@ export const ui = {
   replay: { es: 'Ver otra vez', en: 'Watch again', ca: 'Tornar-ho a veure' },
   ready: { es: '¡Ya lo vi!', en: 'I saw it!', ca: 'Ja ho he vist!' },
   check: { es: 'Comprobar', en: 'Check', ca: 'Comprovar' },
-  winTitle: { es: '¡AVE, CAMPEÓN!', en: 'AVE, CHAMPION!', ca: 'AVE, CAMPIÓ!' },
+  winTitle: { es: '¡AVE, {name}!', en: 'AVE, {name}!', ca: 'AVE, {name}!' },
   winText: {
-    es: '¡Eres un auténtico legionario del saber! El emperador te regala la corona de laurel.',
-    en: 'You are a true legionary of knowledge! The emperor gives you the laurel crown.',
-    ca: 'Ets un autèntic legionari del saber! L’emperador et regala la corona de llorer.',
+    es: '¡Campeón! Eres un auténtico legionario del saber. El emperador te regala la corona de laurel.',
+    en: 'Champion! You are a true legionary of knowledge. The emperor gives you the laurel crown.',
+    ca: 'Campió! Ets un autèntic legionari del saber. L’emperador et regala la corona de llorer.',
   },
-  loseTitle: { es: '¡No te desanimes!', en: "Don't give up!", ca: 'No et desanimis!' },
+  loseTitle: { es: '¡No te desanimes, {name}!', en: "Don't give up, {name}!", ca: 'No et desanimis, {name}!' },
   loseText: {
     es: 'Hasta los mejores legionarios entrenan muchas veces. ¡Inténtalo otra vez, tú puedes!',
     en: 'Even the best legionaries train many times. Try again, you can do it!',
     ca: 'Fins i tot els millors legionaris entrenen moltes vegades. Torna-ho a provar, tu pots!',
   },
-  score: { es: 'Aciertos', en: 'Correct', ca: 'Encerts' },
+  hello: { es: '¡Ave, {name}!', en: 'Ave, {name}!', ca: 'Ave, {name}!' },
   playAgain: { es: 'Jugar otra vez', en: 'Play again', ca: 'Tornar a jugar' },
   home: { es: 'Inicio', en: 'Home', ca: 'Inici' },
   coins: { es: 'Monedas de oro', en: 'Gold coins', ca: 'Monedes d’or' },
@@ -50,6 +53,9 @@ export const ui = {
   tapAll: { es: 'Toca todos', en: 'Tap all', ca: 'Toca tots' },
   quit: { es: '¿Salir?', en: 'Quit?', ca: 'Sortir?' },
 } satisfies Record<string, L>;
+
+/** Texto de la interfaz con el nombre del jugador ya puesto. */
+export const t = (key: keyof typeof ui, lang: Lang) => ui[key][lang].replace('{name}', PLAYER_NAME);
 
 export const subjectName: Record<string, L> = {
   math: { es: 'Mates', en: 'Maths', ca: 'Mates' },

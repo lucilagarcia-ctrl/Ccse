@@ -23,9 +23,11 @@ Funciona en **iOS y Android**, **sin conexión a internet**, y en **castellano, 
   - 🔊 **Escuchar**: la palabra suena y hay que tocar el dibujo
 - Las preguntas se **leen en voz alta** (se puede silenciar con 🔊).
 - Unas 3 veces por partida aparece un **romanito con una curiosidad** («¿Sabías que…?»).
+- Los romanos llaman a Tiano por su nombre («¡Ave, Tiano!», «¡Muy bien, Tiano!»). El nombre está en `PLAYER_NAME` (`src/i18n.ts`).
 - Al final:
   - **10 o más aciertos** → el legionario y el emperador saltan de alegría, confeti y corona de laurel 🏆
-  - **menos de 10 (más de 5 fallos)** → un legionario triste le anima a volver a intentarlo
+  - **al 6.º fallo** la partida se termina en ese momento y un legionario triste le anima a volver a intentarlo
+- Si se cierra la app (o se pulsa ✖️) a mitad de partida, esa partida se pierde y la siguiente empieza de cero.
 - Cada acierto da una moneda 🪙 y cada partida ganada una corona 🏆 (se guardan en el móvil).
 
 ## Para probarla en un ordenador
