@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- cabeza del legionario (mismas formas que src/components/Romanito.tsx) -->
+  <g transform="translate(0 6)">
+    <path d="M60 62 Q100 4 140 62 Z" fill="#B3201F"/>
+    <g stroke="#7E1414" stroke-width="2" fill="none">
+      <path d="M70 60 Q85 30 100 22"/><path d="M82 60 Q91 30 100 22"/><path d="M94 60 Q97 30 100 22"/>
+      <path d="M106 60 Q103 30 100 22"/><path d="M118 60 Q109 30 100 22"/><path d="M130 60 Q115 30 100 22"/>
+    </g>
+    <circle cx="56" cy="108" r="9" fill="#E8AF82"/><circle cx="144" cy="108" r="9" fill="#E8AF82"/>
+    <circle cx="100" cy="106" r="44" fill="#F7CFA6"/>
+    <path d="M73 108 q9 -12 18 0 M109 108 q9 -12 18 0" stroke="#3A2416" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <ellipse cx="70" cy="120" rx="8" ry="5" fill="#F29A9A" opacity="0.6"/><ellipse cx="130" cy="120" rx="8" ry="5" fill="#F29A9A" opacity="0.6"/>
+    <path d="M80 122 Q100 148 120 122 Z" fill="#8E2A2A"/><path d="M90 134 Q100 142 110 134 Q100 130 90 134 Z" fill="#F07C7C"/>
+    <path d="M54 96 Q54 50 100 50 Q146 50 146 96 Q100 82 54 96 Z" fill="#F2BE3A" stroke="#C4901A" stroke-width="3"/>
+    <path d="M54 92 Q100 78 146 92" stroke="#C4901A" stroke-width="5" fill="none"/>
+    <rect x="94" y="52" width="12" height="34" rx="4" fill="#C4901A" opacity="0.5"/>
+    <path d="M52 94 Q48 120 60 134 Q68 120 66 96 Z" fill="#F2BE3A" stroke="#C4901A" stroke-width="2.5"/>
+    <path d="M148 94 Q152 120 140 134 Q132 120 134 96 Z" fill="#F2BE3A" stroke="#C4901A" stroke-width="2.5"/>
+  </g>
+</svg>

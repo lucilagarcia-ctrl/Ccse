@@ -1,0 +1,71 @@
+# Genera el instalador de Android (APK) de Aventura Romana.
+# Se ejecuta solo al cambiar la app, o a mano desde la pestaña "Actions" → "Android (APK)" → "Run workflow".
+# El APK aparece como "artifact" al final de la ejecución; con una etiqueta v* también se publica en "Releases".
+name: Android (APK)
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'aventura-romana/**'
+      - '.github/workflows/android-apk.yml'
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: aventura-romana
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: aventura-romana/package-lock.json
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Comprobar tipos y preguntas
+        run: |
+          npx tsc --noEmit
+          npm run check
+
+      - name: Generar proyecto Android
+        run: npx expo prebuild --platform android --no-install
+        env:
+          CI: 1
+
+      - name: Compilar APK
+        working-directory: aventura-romana/android
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: Renombrar APK
+        run: cp android/app/build/outputs/apk/release/app-release.apk AventuraRomana.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AventuraRomana-android-apk
+          path: aventura-romana/AventuraRomana.apk
+          retention-days: 30
+
+      - name: Publicar en Releases (solo con etiqueta v*)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: aventura-romana/AventuraRomana.apk

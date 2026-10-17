@@ -1,0 +1,75 @@
+# Genera el instalador de iOS (IPA, sin firmar) de Aventura Romana.
+# Apple no permite instalar apps sin firma: el IPA se firma al instalarlo con Sideloadly/AltStore
+# (con un Apple ID gratuito) o con una cuenta de Apple Developer. Ver aventura-romana/INSTALAR.md.
+name: iOS (IPA)
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'aventura-romana/**'
+      - '.github/workflows/ios-ipa.yml'
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  ipa:
+    runs-on: macos-15
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: aventura-romana
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: aventura-romana/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Generar proyecto iOS
+        run: npx expo prebuild --platform ios
+        env:
+          CI: 1
+
+      - name: Compilar (Release, sin firma)
+        working-directory: aventura-romana/ios
+        run: |
+          WS=$(ls -d *.xcworkspace | head -1)
+          SCHEME="${WS%.xcworkspace}"
+          echo "Workspace: $WS  Scheme: $SCHEME"
+          xcodebuild -workspace "$WS" -scheme "$SCHEME" -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/App.xcarchive" archive \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" | tail -n 60
+          test -d "$RUNNER_TEMP/App.xcarchive/Products/Applications"
+
+      - name: Empaquetar IPA
+        run: |
+          mkdir -p "$RUNNER_TEMP/ipa/Payload"
+          cp -R "$RUNNER_TEMP"/App.xcarchive/Products/Applications/*.app "$RUNNER_TEMP/ipa/Payload/"
+          (cd "$RUNNER_TEMP/ipa" && zip -qry "$GITHUB_WORKSPACE/aventura-romana/AventuraRomana-sin-firmar.ipa" Payload)
+          ls -lh AventuraRomana-sin-firmar.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AventuraRomana-ios-ipa
+          path: aventura-romana/AventuraRomana-sin-firmar.ipa
+          retention-days: 30
+
+      - name: Publicar en Releases (solo con etiqueta v*)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: aventura-romana/AventuraRomana-sin-firmar.ipa
