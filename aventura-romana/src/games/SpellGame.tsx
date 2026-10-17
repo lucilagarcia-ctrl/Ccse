@@ -5,6 +5,7 @@ import { play, say } from '../sound';
 import { colors, fonts } from '../theme';
 import { Tile } from './Tile';
 import { GameProps } from './types';
+import { Emoji } from '../components/Emoji';
 
 /** Construir la palabra letra a letra. Si toca una letra equivocada, tiembla y no se coloca. Vale 1 error. */
 export function SpellGame({ q, onAnswer }: GameProps<'spell'>) {
@@ -41,7 +42,7 @@ export function SpellGame({ q, onAnswer }: GameProps<'spell'>) {
 
   return (
     <View style={styles.wrap}>
-      <Text style={styles.emoji}>{q.emoji}</Text>
+      <Emoji char={q.emoji} size={110} />
       <View style={styles.slots}>
         {q.answer.split('').map((_, k) => (
           <View key={k} style={[styles.slot, k < typed.length && styles.filled]}>
@@ -66,7 +67,6 @@ export function SpellGame({ q, onAnswer }: GameProps<'spell'>) {
 
 const styles = StyleSheet.create({
   wrap: { width: '100%', alignItems: 'center', gap: 14 },
-  emoji: { fontSize: 80, lineHeight: 96 },
   slots: { flexDirection: 'row', gap: 6 },
   slot: { width: 46, height: 56, borderBottomWidth: 5, borderColor: colors.purple, alignItems: 'center', justifyContent: 'flex-end', backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: 8 },
   filled: { backgroundColor: '#C9F2C7' },

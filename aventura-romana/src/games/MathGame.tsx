@@ -6,6 +6,7 @@ import { colors, fonts } from '../theme';
 import { ChoiceGrid } from './ChoiceGame';
 import { NumberPad } from './NumberPad';
 import { GameProps } from './types';
+import { Emoji } from '../components/Emoji';
 
 export function MathGame({ q, lang, onAnswer }: GameProps<'math'>) {
   const [result, setResult] = useState<'ok' | 'bad' | undefined>();
@@ -37,6 +38,16 @@ export function MathGame({ q, lang, onAnswer }: GameProps<'math'>) {
   );
 }
 
+function Objects({ emoji, n, size, maxWidth }: { emoji: string; n: number; size: number; maxWidth: number }) {
+  return (
+    <View style={[styles.objRow, { maxWidth }]}>
+      {Array.from({ length: n }).map((_, i) => (
+        <Emoji key={i} char={emoji} size={size} />
+      ))}
+    </View>
+  );
+}
+
 function Visual({ v }: { v: MathVisual }) {
   if (v.type === 'objects') {
     if (v.op === '×') {
@@ -44,7 +55,7 @@ function Visual({ v }: { v: MathVisual }) {
         <View style={styles.groups}>
           {v.groups.map((g, i) => (
             <View key={i} style={styles.bag}>
-              <Text style={styles.objSmall}>{g.emoji.repeat(g.n)}</Text>
+              <Objects emoji={g.emoji} n={g.n} size={24} maxWidth={110} />
             </View>
           ))}
         </View>
@@ -56,7 +67,7 @@ function Visual({ v }: { v: MathVisual }) {
         <View style={styles.objects}>
           {Array.from({ length: all.n }).map((_, i) => (
             <View key={i}>
-              <Text style={[styles.obj, i >= all.n - gone.n && { opacity: 0.35 }]}>{all.emoji}</Text>
+              <Emoji char={all.emoji} size={32} style={i >= all.n - gone.n && { opacity: 0.35 }} />
               {i >= all.n - gone.n && <Text style={styles.cross}>✖</Text>}
             </View>
           ))}
@@ -67,7 +78,7 @@ function Visual({ v }: { v: MathVisual }) {
       <View style={styles.groups}>
         {v.groups.map((g, i) => (
           <View key={i} style={styles.bag}>
-            <Text style={styles.obj}>{g.emoji.repeat(g.n)}</Text>
+            <Objects emoji={g.emoji} n={g.n} size={30} maxWidth={160} />
           </View>
         ))}
       </View>
@@ -112,8 +123,7 @@ const styles = StyleSheet.create({
   objects: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 4, maxWidth: 340 },
   groups: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 8, maxWidth: 360 },
   bag: { backgroundColor: 'rgba(255,255,255,0.75)', borderRadius: 16, borderWidth: 2, borderColor: colors.gold, padding: 6, maxWidth: 170 },
-  obj: { fontSize: 30, lineHeight: 38, textAlign: 'center' },
-  objSmall: { fontSize: 24, lineHeight: 30, textAlign: 'center', maxWidth: 110 },
+  objRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 2 },
   cross: { position: 'absolute', top: -2, left: 6, fontSize: 30, color: colors.bad, fontWeight: '900' },
   tensRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 4, flexWrap: 'wrap', justifyContent: 'center', maxWidth: 360 },
   bar: { gap: 1, padding: 2, backgroundColor: colors.terracottaDark, borderRadius: 4 },

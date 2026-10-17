@@ -1,6 +1,6 @@
 // Comprueba que las partidas generadas son válidas: 15 preguntas, respuestas correctas existentes,
 // variedad de juegos y sin opciones repetidas. Uso: npx tsx scripts/check-sessions.ts
-import { buildSession, PASS_MARK, SESSION_SIZE } from '../src/questions/session';
+import { buildSession, markSeen, PASS_MARK, SESSION_SIZE } from '../src/questions/session';
 import { handWritten } from '../src/questions/content';
 
 let problems = 0;
@@ -26,12 +26,30 @@ for (let s = 0; s < 3000; s++) {
       if (q.choices && !q.choices.includes(q.answer)) fail(`${q.id}: la respuesta no está entre las opciones`);
       if (q.choices && new Set(q.choices).size !== q.choices.length) fail(`${q.id}: opciones repetidas`);
     }
-    if (q.kind === 'memory' && new Set(q.pairs.flat().map((c) => JSON.stringify(c))).size !== 8) fail(`${q.id}: cartas repetidas`);
+    if (q.kind === 'memory' && new Set(q.pairs.flat().map((c) => JSON.stringify(c))).size !== q.pairs.length * 2) fail(`${q.id}: cartas repetidas`);
   }
 }
+// Partidas seguidas recordando lo visto: ninguna pregunta escrita a mano debe repetirse en 20 partidas
+// salvo que su grupo se haya agotado.
+for (let round = 0; round < 50; round++) {
+  let seen: string[] = [];
+  const count = new Map<string, number>();
+  for (let s = 0; s < 20; s++) {
+    for (const q of buildSession([], seen).questions) {
+      if (!handWritten.some((h) => h.id === q.id)) continue;
+      count.set(q.id, (count.get(q.id) ?? 0) + 1);
+      seen = markSeen(seen, q.id);
+    }
+  }
+  const worst = Math.max(...count.values());
+  if (worst > 2) fail(`una pregunta salió ${worst} veces en 20 partidas`);
+  if (round === 0) console.log(`en 20 partidas seguidas: ${count.size} preguntas distintas, la que más se repite salió ${worst} veces`);
+}
+
 const ids = handWritten.map((q) => q.id);
 if (new Set(ids).size !== ids.length) fail('ids repetidos en content.ts');
 
+console.log('preguntas escritas a mano:', handWritten.length);
 console.log('tipos de juego:', kinds);
 console.log('materias:', subjects);
 console.log(`aprobado con ${PASS_MARK}/${SESSION_SIZE}`);

@@ -7,6 +7,7 @@ import { Lang, t, ui } from '../i18n';
 import { PASS_MARK } from '../questions/session';
 import { play, say } from '../sound';
 import { colors, fonts, shadow } from '../theme';
+import { EmojiText } from '../components/Emoji';
 
 type Props = { lang: Lang; correct: number; wrong: number; total: number; onAgain: () => void; onHome: () => void };
 
@@ -38,7 +39,7 @@ export function ResultScreen({ lang, correct, wrong, total, onAgain, onHome }: P
             <Romanito kind="legionario" mood="sad" size={150} />
           )}
         </View>
-        {won && <Text style={styles.trophy}>🏆🌿</Text>}
+        {won && <EmojiText text="🏆🌿" size={60} />}
         <Text style={styles.text}>{won ? ui.winText[lang] : ui.loseText[lang]}</Text>
         <View style={styles.scoreRow}>
           <Text style={styles.score}>
@@ -68,7 +69,6 @@ const styles = StyleSheet.create({
   card: { width: '100%', maxWidth: 440, backgroundColor: 'rgba(251,246,236,0.97)', borderRadius: 30, borderWidth: 5, borderColor: colors.gold, padding: 18, alignItems: 'center', gap: 6, ...shadow },
   title: { fontFamily: fonts.title, fontSize: 30, textAlign: 'center' },
   heroRow: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'center' },
-  trophy: { fontSize: 44, lineHeight: 54 },
   text: { fontFamily: fonts.body, fontSize: 20, color: colors.ink, textAlign: 'center', lineHeight: 27 },
   scoreRow: { flexDirection: 'row', gap: 18, marginTop: 4 },
   score: { fontFamily: fonts.bodyBold, fontSize: 28, color: colors.ink },

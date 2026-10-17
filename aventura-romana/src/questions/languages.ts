@@ -58,7 +58,7 @@ const listen: Gen = (t) => {
 
 // Ver el dibujo → elegir la palabra
 const pictureToWord: Gen = (t) => {
-  const words = pickWords(pool(), 3, t);
+  const words = pickWords(pool(), 4, t);
   const target = words[0];
   const choices = shuffle(words);
   return {
@@ -78,9 +78,9 @@ const trueFalse: Gen = (t) => {
   };
 };
 
-// Memoria: palabra ↔ dibujo
+// Memoria: palabra ↔ dibujo (6 parejas)
 const memory: Gen = (t) => {
-  const words = pickWords(pool(), 4, t);
+  const words = pickWords(vocab, 6, t);
   return {
     id: id(t, 'mem'), subject: subject(t), kind: 'memory',
     pairs: words.map((w): [Choice, Choice] => [{ emoji: w.emoji }, { label: w[t], speakAs: t }]),
@@ -92,7 +92,7 @@ const memory: Gen = (t) => {
 const spell: Gen = (t) => {
   const w = pick(spellWords);
   const word = w[t];
-  const extra = sample('ABCDEFGILMNOPRSTU'.split('').filter((c) => !word.includes(c)), 2);
+  const extra = sample('ABCDEFGILMNOPRSTU'.split('').filter((c) => !word.includes(c)), 3);
   return {
     id: id(t, 'spell'), subject: subject(t), kind: 'spell', emoji: w.emoji, answer: word, lang: t, extra,
     prompt: fill({ es: 'Escribe la palabra {lang}', en: 'Spell the word {lang}', ca: 'Escriu la paraula {lang}' }, t),
@@ -101,7 +101,7 @@ const spell: Gen = (t) => {
 
 // Números: oír/leer el número en el idioma → tocar la cifra
 const numbers: Gen = (t) => {
-  const opts = sample(numbersVocab, 3);
+  const opts = sample(numbersVocab, 4);
   const target = opts[0];
   const choices = shuffle(opts);
   return {

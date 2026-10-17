@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ChoiceView } from '../components/ChoiceView';
+import { ChoiceView, choiceText } from '../components/ChoiceView';
 import { Lang } from '../i18n';
 import { shuffle } from '../questions/random';
 import { Choice } from '../questions/types';
@@ -13,7 +13,8 @@ type Props = { choices: Choice[]; correct: number; lang: Lang; onAnswer: (ok: bo
 export function ChoiceGrid({ choices, correct, lang, onAnswer }: Props) {
   const order = useMemo(() => shuffle(choices.map((_, i) => i)), [choices]);
   const [picked, setPicked] = useState<number | null>(null);
-  const visualOnly = choices.every((c) => !c.label);
+  // Dibujos o textos cortos (números, horas…) en cuadrícula 2×2; frases en columna.
+  const visualOnly = choices.every((c) => !c.label || choiceText(c, lang).length <= 7);
 
   const choose = (i: number) => {
     if (picked !== null) return;

@@ -9,6 +9,7 @@ import { play } from '../sound';
 import { colors, fonts, shadow } from '../theme';
 import { ChoiceGrid } from './ChoiceGame';
 import { GameProps } from './types';
+import { Emoji } from '../components/Emoji';
 
 const STAGE_W = 340;
 const STAGE_H = 210;
@@ -164,18 +165,22 @@ function CoinChest({ start, add, remove, onEnd }: { start: number; add: number; 
             },
           ]}
         >
-          <Text style={styles.coinsText}>{'🪙'.repeat(start)}</Text>
+          <View style={styles.coinsRow}>
+            {Array.from({ length: start }).map((_, i) => (
+              <Emoji key={i} char="🪙" size={34} />
+            ))}
+          </View>
         </Animated.View>
       )}
-      {(step === 'eagle' || (step === 'done' && remove > 0)) && <Text style={styles.eagle}>🦅</Text>}
-      <Text style={styles.chest}>🧰</Text>
+      {(step === 'eagle' || (step === 'done' && remove > 0)) && <Emoji char="🦅" size={70} style={styles.eagle} />}
+      <Emoji char="🧰" size={100} style={styles.chest} />
       {moving && (
-        <Animated.Text key={moving.key} style={[styles.flyingCoin, { transform: [{ translateX: coinX }, { translateY: coinY }] }]}>
-          🪙
-        </Animated.Text>
+        <Animated.View key={moving.key} style={[styles.flyingCoin, { transform: [{ translateX: coinX }, { translateY: coinY }] }]}>
+          <Emoji char="🪙" size={40} />
+        </Animated.View>
       )}
-      {step === 'add' && <Text style={styles.plus}>➕</Text>}
-      {step === 'eagle' && <Text style={styles.minus}>➖</Text>}
+      {step === 'add' && <Emoji char="➕" size={40} style={styles.plus} />}
+      {step === 'eagle' && <Emoji char="➖" size={40} style={styles.minus} />}
     </View>
   );
 }
@@ -196,7 +201,10 @@ function Race({ winner, onEnd }: { winner: number; onEnd: () => void }) {
       <View style={styles.finish} />
       {anims.map((a, i) => (
         <Animated.View key={i} style={[styles.lane, { transform: [{ translateX: a.interpolate({ inputRange: [0, 1], outputRange: [0, STAGE_W - 90] }) }] }]}>
-          <Text style={styles.horse}>{RACE_COLORS[i]}🐎</Text>
+          <View style={styles.horseRow}>
+            <Emoji char={RACE_COLORS[i]} size={22} />
+            <Emoji char="🐎" size={40} style={styles.horse} />
+          </View>
         </Animated.View>
       ))}
     </View>
@@ -218,7 +226,7 @@ function Pattern({ seq, onEnd }: { seq: string[]; onEnd: () => void }) {
     <View style={[styles.center, { flexDirection: 'row', flexWrap: 'wrap', gap: 4, paddingHorizontal: 8 }]}>
       {[...seq, '❓'].map((e, i) => (
         <Animated.View key={i} style={[styles.patternCell, i === seq.length && styles.patternHole, { transform: [{ scale: anims[i] }] }]}>
-          <Text style={{ fontSize: 30, lineHeight: 38 }}>{e}</Text>
+          <Emoji char={e} size={38} />
         </Animated.View>
       ))}
     </View>
@@ -236,15 +244,16 @@ const styles = StyleSheet.create({
   road: { position: 'absolute', left: 0, right: 0, bottom: 0, height: 46, backgroundColor: '#C9A36B', borderTopWidth: 4, borderColor: '#A8834D' },
   marcher: { position: 'absolute', bottom: 8, left: 0 },
   coinRow: { position: 'absolute', top: 10, left: 0, right: 0, alignItems: 'center' },
-  coinsText: { fontSize: 32, lineHeight: 40, textAlign: 'center' },
-  chest: { position: 'absolute', bottom: 6, left: STAGE_W / 2 - 50, fontSize: 84, lineHeight: 100 },
-  flyingCoin: { position: 'absolute', top: 0, left: 0, fontSize: 34, lineHeight: 42 },
-  eagle: { position: 'absolute', top: 4, right: 18, fontSize: 56, lineHeight: 66 },
+  coinsRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', maxWidth: STAGE_W - 20 },
+  chest: { position: 'absolute', bottom: 6, left: STAGE_W / 2 - 50 },
+  flyingCoin: { position: 'absolute', top: 0, left: 0 },
+  eagle: { position: 'absolute', top: 4, right: 18 },
   plus: { position: 'absolute', top: 10, left: 12, fontSize: 34 },
   minus: { position: 'absolute', top: 10, left: 12, fontSize: 34 },
   finish: { position: 'absolute', right: 26, top: 0, bottom: 0, width: 8, backgroundColor: '#222', borderLeftWidth: 4, borderColor: '#fff', borderStyle: 'dashed' },
   lane: { height: 44, justifyContent: 'center', borderBottomWidth: 2, borderColor: '#D9BF85' },
-  horse: { fontSize: 32, lineHeight: 40, transform: [{ scaleX: -1 }] },
+  horseRow: { flexDirection: 'row', alignItems: 'center', gap: 2 },
+  horse: { transform: [{ scaleX: -1 }] },
   patternCell: { width: 48, height: 48, borderRadius: 12, backgroundColor: colors.marble, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: colors.gold },
   patternHole: { borderStyle: 'dashed', borderColor: colors.purple, backgroundColor: '#F3E8FF' },
 });

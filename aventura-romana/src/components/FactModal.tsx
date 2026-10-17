@@ -6,6 +6,7 @@ import { play, say } from '../sound';
 import { colors, fonts, shadow } from '../theme';
 import { BigButton } from './BigButton';
 import { Romanito } from './Romanito';
+import { EmojiText } from './Emoji';
 
 /** Un romanito aparece de un salto con una curiosidad corta de Roma. */
 export function FactModal({ fact, lang, muted, onClose }: { fact: Fact | null; lang: Lang; muted: boolean; onClose: () => void }) {
@@ -26,7 +27,7 @@ export function FactModal({ fact, lang, muted, onClose }: { fact: Fact | null; l
             <View style={styles.ribbon}>
               <Text style={styles.ribbonText}>💡 {ui.didYouKnow[lang]}</Text>
             </View>
-            <Text style={styles.emoji}>{fact.emoji}</Text>
+            <EmojiText text={fact.emoji} size={72} style={styles.emoji} />
             <Text style={styles.text}>{fact.text[lang]}</Text>
             <View style={styles.bottom}>
               <Romanito kind={fact.kind} mood="talk" size={96} />
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
   card: { width: '100%', maxWidth: 420, backgroundColor: colors.marble, borderRadius: 28, borderWidth: 5, borderColor: colors.gold, padding: 18, paddingTop: 30, alignItems: 'center', gap: 8, ...shadow },
   ribbon: { position: 'absolute', top: -20, backgroundColor: colors.red, paddingHorizontal: 18, paddingVertical: 6, borderRadius: 14, borderWidth: 3, borderColor: colors.gold },
   ribbonText: { fontFamily: fonts.bodyBold, color: colors.white, fontSize: 20 },
-  emoji: { fontSize: 64, lineHeight: 78 },
+  emoji: { marginVertical: 4 },
   text: { fontFamily: fonts.body, fontSize: 22, color: colors.ink, textAlign: 'center', lineHeight: 30 },
   bottom: { flexDirection: 'row', alignItems: 'flex-end', gap: 10, width: '100%' },
 });

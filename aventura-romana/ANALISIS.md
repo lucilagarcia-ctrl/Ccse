@@ -125,3 +125,17 @@ Preguntas originales:
 11. **Castellano de Argentina o de España** en los textos (por ejemplo "vos/tú")? Ahora está en castellano
     de España, por el cole.
 12. **Tiempo de pantalla**: ¿un límite (por ejemplo 2 partidas al día) o un aviso de descanso?
+
+## 6. Cambios de la versión 1.1
+
+- **Menos repeticiones**: antes había solo 49 preguntas escritas a mano y la app olvidaba las ya vistas al
+  cerrarse. Ahora hay 157 y el teléfono recuerda las vistas: no se repite ninguna hasta agotar su grupo
+  (Argentina, España/Cataluña, Roma, inglés, catalán). En una simulación de 20 partidas seguidas no se
+  repitió ninguna.
+- **Curiosidades**: de 22 a 102 (Roma, España/Cataluña y Argentina), sin repetir hasta verlas todas.
+- **Más difícil**: 4 opciones en lugar de 3; sumas y restas de dos cifras llevando; números de tres cifras;
+  tablas del 2, 5 y 10; problemas con Tiano; número que falta (8 + ? = 15); series hacia atrás y de 100 en 100;
+  la hora con cuartos; números romanos hasta el XX; memoria de 6 parejas; deletreo con más letras falsas.
+- **Imágenes 3D** (Microsoft Fluent Emoji, licencia MIT) en lugar de emojis. No se usan fotos de internet
+  porque casi todas tienen derechos de autor y no tendrían un estilo uniforme.
+

@@ -80,7 +80,10 @@ export const numbersVocab: { n: number; en: string; ca: string }[] = [
   { n: 4, en: 'four', ca: 'quatre' }, { n: 5, en: 'five', ca: 'cinc' }, { n: 6, en: 'six', ca: 'sis' },
   { n: 7, en: 'seven', ca: 'set' }, { n: 8, en: 'eight', ca: 'vuit' }, { n: 9, en: 'nine', ca: 'nou' },
   { n: 10, en: 'ten', ca: 'deu' }, { n: 11, en: 'eleven', ca: 'onze' }, { n: 12, en: 'twelve', ca: 'dotze' },
-  { n: 15, en: 'fifteen', ca: 'quinze' }, { n: 20, en: 'twenty', ca: 'vint' },
+  { n: 13, en: 'thirteen', ca: 'tretze' }, { n: 14, en: 'fourteen', ca: 'catorze' }, { n: 15, en: 'fifteen', ca: 'quinze' },
+  { n: 16, en: 'sixteen', ca: 'setze' }, { n: 17, en: 'seventeen', ca: 'disset' }, { n: 18, en: 'eighteen', ca: 'divuit' },
+  { n: 19, en: 'nineteen', ca: 'dinou' }, { n: 20, en: 'twenty', ca: 'vint' }, { n: 30, en: 'thirty', ca: 'trenta' },
+  { n: 40, en: 'forty', ca: 'quaranta' }, { n: 50, en: 'fifty', ca: 'cinquanta' }, { n: 100, en: 'one hundred', ca: 'cent' },
 ];
 
 /** Palabras cortas para el juego de "construir la palabra" con letras. */
@@ -100,4 +103,12 @@ export const spellWords: { emoji: string; en: string; ca: string }[] = [
   { emoji: '✋', en: 'HAND', ca: 'MÀ' },
   { emoji: '🐸', en: 'FROG', ca: 'GRANOTA' },
   { emoji: '⭐', en: 'STAR', ca: 'ESTEL' },
+  { emoji: '🍎', en: 'APPLE', ca: 'POMA' },
+  { emoji: '🐴', en: 'HORSE', ca: 'CAVALL' },
+  { emoji: '🌸', en: 'FLOWER', ca: 'FLOR' },
+  { emoji: '🐭', en: 'MOUSE', ca: 'RATOLÍ' },
+  { emoji: '🧀', en: 'CHEESE', ca: 'FORMATGE' },
+  { emoji: '🍊', en: 'ORANGE', ca: 'TARONJA' },
+  { emoji: '🐦', en: 'BIRD', ca: 'OCELL' },
+  { emoji: '🌧️', en: 'RAIN', ca: 'PLUJA' },
 ];

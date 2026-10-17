@@ -6,7 +6,8 @@ import { ActivityIndicator, Platform, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { RomanBackground } from './src/components/RomanBackground';
 import { Lang } from './src/i18n';
-import { buildSession, PASS_MARK, Session } from './src/questions/session';
+import { markFactSeen } from './src/questions/facts';
+import { buildSession, markSeen, PASS_MARK, Session } from './src/questions/session';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { QuizScreen } from './src/screens/QuizScreen';
 import { ResultScreen } from './src/screens/ResultScreen';
@@ -14,8 +15,8 @@ import { loadProgress, Progress, saveProgress } from './src/storage';
 import { colors } from './src/theme';
 
 /** Sólo en desarrollo web: ?demo=video pone primero un reto de ese tipo (para capturas y pruebas). */
-function newSession(seenFacts: number[]): Session {
-  const session = buildSession(seenFacts);
+function newSession(seenFacts: number[], seenQuestions: string[]): Session {
+  const session = buildSession(seenFacts, seenQuestions);
   const demo = __DEV__ && Platform.OS === 'web' ? new URLSearchParams(window.location.search).get('demo') : null;
   const i = demo ? session.questions.findIndex((q) => q.kind === demo || q.id.startsWith(demo)) : -1;
   if (i > 0) session.questions.unshift(...session.questions.splice(i, 1));
@@ -43,9 +44,9 @@ export default function App() {
     loadProgress().then(setProgress);
   }, []);
 
-  const update = (patch: Partial<Progress>) => {
+  const update = (patch: Partial<Progress> | ((p: Progress) => Partial<Progress>)) => {
     setProgress((p) => {
-      const next = { ...(p as Progress), ...patch };
+      const next = { ...(p as Progress), ...(typeof patch === 'function' ? patch(p as Progress) : patch) };
       saveProgress(next);
       return next;
     });
@@ -72,7 +73,7 @@ export default function App() {
             coins={progress.coins}
             crowns={progress.crowns}
             onLang={(l) => update({ lang: l })}
-            onPlay={() => setScreen({ name: 'quiz', session: newSession(progress.seenFacts), round: Date.now() })}
+            onPlay={() => setScreen({ name: 'quiz', session: newSession(progress.seenFacts, progress.seenQuestions), round: Date.now() })}
           />
         )}
         {screen.name === 'quiz' && (
@@ -80,7 +81,8 @@ export default function App() {
             key={screen.round}
             lang={lang}
             session={screen.session}
-            onFactSeen={(id) => update({ seenFacts: [...progress.seenFacts, id].slice(-18) })}
+            onFactSeen={(id) => update((p) => ({ seenFacts: markFactSeen(p.seenFacts, id) }))}
+            onQuestionSeen={(id) => update((p) => ({ seenQuestions: markSeen(p.seenQuestions, id) }))}
             onQuit={() => setScreen({ name: 'home' })}
             onFinish={(correct, wrong) => {
               update({ coins: progress.coins + correct, crowns: progress.crowns + (correct >= PASS_MARK ? 1 : 0) });
@@ -94,7 +96,7 @@ export default function App() {
             correct={screen.correct}
             wrong={screen.wrong}
             total={screen.total}
-            onAgain={() => setScreen({ name: 'quiz', session: newSession(progress.seenFacts), round: Date.now() })}
+            onAgain={() => setScreen({ name: 'quiz', session: newSession(progress.seenFacts, progress.seenQuestions), round: Date.now() })}
             onHome={() => setScreen({ name: 'home' })}
           />
         )}

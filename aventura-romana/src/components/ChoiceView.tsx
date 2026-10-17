@@ -4,6 +4,7 @@ import { Choice } from '../questions/types';
 import { colors, fonts } from '../theme';
 import { Clock } from './Clock';
 import { Flag } from './Flags';
+import { EmojiText, hasEmojiImage } from './Emoji';
 
 export const choiceText = (c: Choice, lang: Lang) => (typeof c.label === 'string' ? c.label : c.label?.[lang] ?? '');
 
@@ -12,14 +13,16 @@ export function ChoiceView({ choice, lang, size = 56, compact = false }: { choic
   const text = choiceText(choice, lang);
   return (
     <View style={styles.wrap}>
-      {choice.emoji ? <Text style={{ fontSize: size, lineHeight: size * 1.2, textAlign: 'center' }}>{choice.emoji}</Text> : null}
+      {choice.emoji ? <EmojiText text={choice.emoji} size={size * 1.15} /> : null}
       {choice.flag ? (
         <View style={styles.flag}>
           <Flag lang={choice.flag} width={size * 1.6} />
         </View>
       ) : null}
       {choice.clock ? <Clock h={choice.clock.h} m={choice.clock.m} size={size * 1.4} /> : null}
-      {text ? (
+      {text && hasEmojiImage(text) ? (
+        <EmojiText text={text} size={compact ? 24 : 34} textStyle={[styles.text, { fontSize: compact ? 15 : 24 }]} />
+      ) : text ? (
         <Text
           style={[styles.text, { fontSize: compact ? (text.length > 6 ? 15 : 19) : text.length > 12 ? 22 : text.length > 5 ? 26 : 34 }]}
           numberOfLines={2}

@@ -5,9 +5,10 @@ import { shuffle } from '../questions/random';
 import { play, say } from '../sound';
 import { colors, fonts, shadow } from '../theme';
 import { GameProps } from './types';
+import { Emoji } from '../components/Emoji';
 
-/** Juego de parejas: 8 cartas boca abajo. Gana si termina con 6 fallos o menos. */
-export const MEMORY_MAX_MISSES = 6;
+/** Juego de parejas (4 o 6 parejas). Gana si termina con como mucho 1,5 fallos por pareja (6 o 9). */
+const maxMisses = (pairs: number) => Math.round(pairs * 1.5);
 
 const GAP = 10;
 
@@ -26,11 +27,11 @@ export function MemoryGame({ q, lang, onAnswer }: GameProps<'memory'>) {
   useEffect(() => {
     if (!finished.current && done.length === cards.length) {
       finished.current = true;
-      const ok = misses <= MEMORY_MAX_MISSES;
+      const ok = misses <= maxMisses(q.pairs.length);
       play(ok ? 'correct' : 'wrong');
       onAnswer(ok);
     }
-  }, [done, cards.length, misses, onAnswer]);
+  }, [done, cards.length, misses, onAnswer, q.pairs.length]);
 
   const flip = (i: number) => {
     if (open.length === 2 || open.includes(i) || done.includes(i)) return;
@@ -82,7 +83,7 @@ function Card({ size, faceUp, matched, onPress, children }: CardProps) {
     <Pressable onPress={onPress} style={size}>
       <Animated.View style={[styles.card, styles.back, { opacity: back, transform: [{ scaleX }] }]}>
         <Text style={styles.backText}>SPQR</Text>
-        <Text style={{ fontSize: 26 }}>🏛️</Text>
+        <Emoji char="🏛️" size={30} />
       </Animated.View>
       <Animated.View style={[styles.card, styles.front, matched && styles.matched, { opacity: front, transform: [{ scaleX }] }]}>
         {children}

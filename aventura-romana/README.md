@@ -22,7 +22,9 @@ Funciona en **iOS y Android**, **sin conexión a internet**, y en **castellano, 
   - 🃏 **Memoria** (parejas), ↕️ **ordenar**, 👆 **tocar todos los…**, 🔤 **deletrear** palabras en inglés/catalán
   - 🔊 **Escuchar**: la palabra suena y hay que tocar el dibujo
 - Las preguntas se **leen en voz alta** (se puede silenciar con 🔊).
-- Unas 3 veces por partida aparece un **romanito con una curiosidad** («¿Sabías que…?»).
+- Unas 3 veces por partida aparece un **romanito con una curiosidad** («¿Sabías que…?»): hay 102 (Roma, España/Cataluña y Argentina) y no se repite ninguna hasta que han salido todas.
+- Hay 157 preguntas escritas a mano (historia, Roma, inglés, catalán) además de las de mates y vocabulario, que se generan nuevas en cada partida. El teléfono recuerda cuáles ya salieron y no las repite hasta agotar las de su tema.
+- Los dibujos son ilustraciones 3D de [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) (licencia MIT, ver `assets/emoji/LICENSE-fluent-emoji.txt`), incluidas en la app.
 - Los romanos llaman a Tiano por su nombre («¡Ave, Tiano!», «¡Muy bien, Tiano!»). El nombre está en `PLAYER_NAME` (`src/i18n.ts`).
 - Al final:
   - **10 o más aciertos** → el legionario y el emperador saltan de alegría, confeti y corona de laurel 🏆
@@ -60,7 +62,7 @@ src/sound.ts                 efectos de sonido, vibración y voz
 src/storage.ts               monedas, coronas e idioma (guardado en el móvil)
 src/components/              Romanito (personaje SVG), fondo, banderas, reloj, botones, confeti…
 src/games/                   un componente por tipo de reto
-src/questions/content.ts     preguntas escritas a mano (historia, Roma, catalán, inglés)
+src/questions/content*.ts    preguntas escritas a mano (historia, Roma, catalán, inglés)
 src/questions/vocab.ts       vocabulario para inglés y catalán
 src/questions/math.ts        generadores de mates (números nuevos en cada partida)
 src/questions/languages.ts   generadores de inglés y catalán
@@ -68,6 +70,7 @@ src/questions/facts.ts       curiosidades de Roma
 src/questions/session.ts     arma cada partida de 15 retos
 scripts/make-sounds.js       genera los sonidos (WAV) sin archivos de terceros
 scripts/icon.svg             icono de la app
+scripts/make-emoji-images.py descarga las ilustraciones 3D y genera src/emojiImages.ts
 ```
 
 ### Añadir preguntas

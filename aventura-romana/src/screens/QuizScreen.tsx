@@ -18,11 +18,13 @@ import { MAX_WRONG, Session } from '../questions/session';
 import { Question } from '../questions/types';
 import { say, stopSpeech } from '../sound';
 import { colors, fonts, shadow } from '../theme';
+import { Emoji, EmojiText } from '../components/Emoji';
 
 type Props = {
   lang: Lang;
   session: Session;
   onFactSeen: (id: number) => void;
+  onQuestionSeen: (id: string) => void;
   onQuit: () => void;
   /** Termina al responder los 15 retos o al 6.º fallo. */
   onFinish: (correct: number, wrong: number) => void;
@@ -31,7 +33,7 @@ type Props = {
 const subjectIcon: Record<string, string> = { math: '🔢', history: '📜', rome: '🏛️', english: '🇬🇧', catalan: '🗣️' };
 const subjectColor: Record<string, string> = { math: colors.skyDeep, history: colors.terracotta, rome: colors.purple, english: '#2F5DB0', catalan: '#D4A20C' };
 
-export function QuizScreen({ lang, session, onFactSeen, onQuit, onFinish }: Props) {
+export function QuizScreen({ lang, session, onFactSeen, onQuestionSeen, onQuit, onFinish }: Props) {
   const { questions } = session;
   const [index, setIndex] = useState(0);
   const [results, setResults] = useState<boolean[]>([]);
@@ -58,6 +60,7 @@ export function QuizScreen({ lang, session, onFactSeen, onQuit, onFinish }: Prop
     }
   }, [q, muted, speak]);
   useEffect(() => () => stopSpeech(), []);
+  useEffect(() => onQuestionSeen(q.id), [q.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const next = useCallback(() => {
     if (fact) return;
@@ -155,11 +158,11 @@ export function QuizScreen({ lang, session, onFactSeen, onQuit, onFinish }: Prop
         )}
         {q.kind === 'choice' && q.listen && q.word && (
           <Pressable style={styles.listen} onPress={() => say(q.word!.text, q.word!.lang)}>
-            <Text style={{ fontSize: 56, lineHeight: 66 }}>🔊</Text>
+            <Emoji char="🔊" size={64} />
             {answered && <Text style={styles.wordText}>{q.word.text}</Text>}
           </Pressable>
         )}
-        {q.kind === 'choice' && q.scene && <Text style={styles.scene}>{q.scene}</Text>}
+        {q.kind === 'choice' && q.scene && <EmojiText text={q.scene} size={76} textStyle={styles.scene} />}
 
         <View style={styles.game}>
           <Game q={q} lang={lang} onAnswer={onAnswer} />
@@ -254,7 +257,7 @@ const styles = StyleSheet.create({
   wordText: { fontFamily: fonts.bodyBold, fontSize: 36, color: colors.purpleDark },
   wordSpeaker: { fontSize: 26 },
   listen: { alignItems: 'center', backgroundColor: colors.white, borderRadius: 60, padding: 16, borderWidth: 5, borderColor: colors.purple, ...shadow },
-  scene: { fontSize: 64, lineHeight: 78, textAlign: 'center', fontFamily: fonts.bodyBold, color: colors.ink },
+  scene: { fontSize: 40, lineHeight: 52, textAlign: 'center', fontFamily: fonts.bodyBold, color: colors.ink },
   game: { width: '100%', maxWidth: 480, alignItems: 'center' },
   feedback: { position: 'absolute', left: 0, right: 0, bottom: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 18, paddingTop: 10, paddingBottom: 26, borderTopLeftRadius: 26, borderTopRightRadius: 26, ...shadow },
   feedbackText: { fontFamily: fonts.bodyBold, fontSize: 26, color: colors.white, flexShrink: 1 },

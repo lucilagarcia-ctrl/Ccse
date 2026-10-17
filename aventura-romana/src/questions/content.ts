@@ -1,3 +1,4 @@
+import { extraQuestions } from './content-extra';
 import { Question } from './types';
 
 /**
@@ -5,7 +6,7 @@ import { Question } from './types';
  * Nivel: 2.º de primaria (cicle inicial). Se apoyan en dibujos/emojis y frases cortas.
  * Reglas: en 'choice', `correct` es el índice de la opción buena (se barajan al mostrar).
  */
-export const handWritten: Question[] = [
+const firstBatch: Question[] = [
   // ───────────── ROMA ─────────────
   {
     id: 'rome-wolf', subject: 'rome', kind: 'choice', scene: '👶👶',
@@ -261,3 +262,5 @@ export const handWritten: Question[] = [
     choices: [{ label: "It's rainy.", speakAs: 'en' }, { label: "It's sunny.", speakAs: 'en' }, { label: "It's snowy.", speakAs: 'en' }], correct: 0,
   },
 ];
+
+export const handWritten: Question[] = [...firstBatch, ...extraQuestions];

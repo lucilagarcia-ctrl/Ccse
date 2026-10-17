@@ -19,9 +19,10 @@ export function numberChoices(answer: number, count = 3, spread = 3): number[] {
     if (set.size >= count) break;
     if (n >= 0) set.add(n);
   }
-  while (set.size < count) {
+  // Siempre termina: si la respuesta es pequeña, se completa hacia arriba.
+  for (let extra = 1; set.size < count; extra++) {
     const n = answer + randInt(-spread * 3, spread * 3);
-    if (n >= 0) set.add(n);
+    set.add(n >= 0 ? n : answer + extra);
   }
   return shuffle([...set]);
 }

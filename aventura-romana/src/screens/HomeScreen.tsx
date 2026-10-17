@@ -5,6 +5,7 @@ import { Romanito } from '../components/Romanito';
 import { Lang, LANGS, t, ui } from '../i18n';
 import { play, say } from '../sound';
 import { colors, fonts, shadow } from '../theme';
+import { Emoji } from '../components/Emoji';
 
 type Props = { lang: Lang; coins: number; crowns: number; onLang: (l: Lang) => void; onPlay: () => void };
 
@@ -14,11 +15,11 @@ export function HomeScreen({ lang, coins, crowns, onLang, onPlay }: Props) {
     <View style={styles.wrap}>
       <View style={styles.stats}>
         <View style={styles.chip}>
-          <Text style={styles.chipEmoji}>🪙</Text>
+          <Emoji char="🪙" size={26} />
           <Text style={styles.chipNum}>{coins}</Text>
         </View>
         <View style={styles.chip}>
-          <Text style={styles.chipEmoji}>🏆</Text>
+          <Emoji char="🏆" size={26} />
           <Text style={styles.chipNum}>{crowns}</Text>
         </View>
       </View>
@@ -69,7 +70,6 @@ const styles = StyleSheet.create({
   wrap: { flex: 1, alignItems: 'center', paddingHorizontal: 16, paddingTop: 8, gap: 10, justifyContent: 'center' },
   stats: { flexDirection: 'row', gap: 10, alignSelf: 'flex-end' },
   chip: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.85)', borderRadius: 20, paddingHorizontal: 12, paddingVertical: 4, gap: 6, ...shadow },
-  chipEmoji: { fontSize: 20 },
   chipNum: { fontFamily: fonts.bodyBold, fontSize: 20, color: colors.ink },
   banner: { backgroundColor: colors.marble, borderRadius: 20, borderWidth: 4, borderColor: colors.gold, paddingHorizontal: 22, paddingVertical: 10, alignItems: 'center', ...shadow },
   spqr: { fontFamily: fonts.titleBold, color: colors.red, fontSize: 14, letterSpacing: 3 },

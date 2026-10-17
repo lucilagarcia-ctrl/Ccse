@@ -1,9 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Lang } from './i18n';
 
-export type Progress = { lang: Lang | null; coins: number; crowns: number; seenFacts: number[] };
+/** seenQuestions: preguntas escritas a mano ya vistas (para no repetirlas hasta agotar su grupo). */
+export type Progress = { lang: Lang | null; coins: number; crowns: number; seenFacts: number[]; seenQuestions: string[] };
 const KEY = 'aventura-romana/v1';
-const empty: Progress = { lang: null, coins: 0, crowns: 0, seenFacts: [] };
+const empty: Progress = { lang: null, coins: 0, crowns: 0, seenFacts: [], seenQuestions: [] };
 
 export async function loadProgress(): Promise<Progress> {
   try {
