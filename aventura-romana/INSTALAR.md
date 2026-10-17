@@ -26,7 +26,10 @@ Se generan solos cada vez que cambia algo dentro de `aventura-romana/`. Para lan
    - `AventuraRomana-android-apk` → descarga un `.zip` con `AventuraRomana.apk` dentro.
    - `AventuraRomana-ios-ipa` → descarga un `.zip` con `AventuraRomana-sin-firmar.ipa` dentro.
 
-**Truco: un enlace de descarga fijo (Releases).** Si creas una etiqueta que empiece por `v`
+**Truco: un enlace de descarga fijo (Releases).** Al pulsar **Run workflow** puedes escribir una versión
+(por ejemplo `v1.0.1`) en el campo **Versión**: el flujo crea esa Release y le adjunta el instalador
+(lanza los dos flujos con la misma versión para tener el APK y el IPA juntos). También vale crear
+una etiqueta que empiece por `v`
 (GitHub → **Releases** → **Draft a new release** → *Choose a tag* → escribe `v1.0.0` → **Publish release**),
 los dos flujos se ejecutan y **adjuntan el APK y el IPA a esa Release**. Así puedes abrir la página de la
 Release directamente desde el móvil y descargar el archivo sin descomprimir nada.

@@ -5,6 +5,11 @@ name: Android (APK)
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Versión para publicar en Releases (por ejemplo v1.0.0). Vacío = solo artifact.'
+        required: false
+        default: ''
   push:
     paths:
       - 'aventura-romana/**'
@@ -64,8 +69,11 @@ jobs:
           path: aventura-romana/AventuraRomana.apk
           retention-days: 30
 
-      - name: Publicar en Releases (solo con etiqueta v*)
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Publicar en Releases (etiqueta v* o versión indicada al lanzarlo)
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.version != ''
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ inputs.version || github.ref_name }}
+          name: Aventura Romana ${{ inputs.version || github.ref_name }}
+          target_commitish: ${{ github.sha }}
           files: aventura-romana/AventuraRomana.apk
