@@ -44,6 +44,17 @@ npx expo start          # escanear el QR con Expo Go (iOS/Android), o pulsar "w"
 
 Ver **[INSTALAR.md](INSTALAR.md)**: GitHub genera automáticamente el `.apk` (Android) y el `.ipa` (iOS).
 
+## Grabar la voz en castellano a mano
+
+1. `grabaciones/frases-es.html` tiene las 280 frases en castellano en 6 tandas (la lista con su orden exacto
+   está en `grabaciones/frases-es.json`; se regenera con `scripts/make-recording-list.ts`).
+2. Cada tanda se graba en un archivo (Notas de voz), leyendo en orden con ~2 s de silencio entre frases.
+3. Con los archivos `tanda-1.m4a` … `tanda-6.m4a` en una carpeta:
+   `python3 scripts/import-recordings.py carpeta --prueba` (comprueba los cortes) y, si todo sale ✓,
+   `python3 scripts/import-recordings.py carpeta`. Si alguna frase se leyó dos veces: `--repetidas 3:12`.
+
+Las frases grabadas sustituyen a la voz sintética; las que falten siguen con la voz sintética.
+
 ## Comprobaciones
 
 ```bash
