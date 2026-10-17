@@ -1,5 +1,5 @@
 // Generado por scripts/make-voice.py — no editar a mano.
-// Voces neuronales Piper: ca-upc_ona, es-mls_9972, en-gb-southern_english_female.
+// Voces neuronales Piper: ca-upc_ona, es-carlfm, en-gb-southern_english_female.
 export const voiceClips: Record<string, number> = {
   '0043d8d1': require('../assets/voice/0043d8d1.m4a'),
   '005821bc': require('../assets/voice/005821bc.m4a'),

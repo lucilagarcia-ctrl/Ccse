@@ -21,7 +21,7 @@ Funciona en **iOS y Android**, **sin conexión a internet**, y en **castellano, 
   - 🎬 **"Vídeos"**: escenas animadas (desfile de legionarios, cofre de monedas con un águila ladrona, carrera de cuadrigas, reloj, series) que se miran y luego se responden
   - 🃏 **Memoria** (parejas), ↕️ **ordenar**, 👆 **tocar todos los…**, 🔤 **deletrear** palabras en inglés/catalán
   - 🔊 **Escuchar**: la palabra suena y hay que tocar el dibujo
-- Las preguntas se **leen en voz alta** (se puede silenciar con 🔊). Las frases fijas (1.075) están grabadas con voces neuronales [Piper](https://github.com/rhasspy/piper) (catalán, castellano e inglés británico) y funcionan sin internet; lo que cambia cada partida (problemas con números) lo lee la mejor voz instalada en el teléfono.
+- Las preguntas se **leen en voz alta** (se puede silenciar con 🔊). Las frases fijas (1.075) están grabadas con voces neuronales [Piper](https://github.com/rhasspy/piper) (catalán "ona", castellano "carlfm" e inglés británico) y funcionan sin internet; lo que cambia cada partida (problemas con números) lo lee la mejor voz instalada en el teléfono.
 - Unas 3 veces por partida aparece un **romanito con una curiosidad** («¿Sabías que…?»): hay 102 (Roma, España/Cataluña y Argentina) y no se repite ninguna hasta que han salido todas.
 - Hay 157 preguntas escritas a mano (historia, Roma, inglés, catalán) además de las de mates y vocabulario, que se generan nuevas en cada partida. El teléfono recuerda cuáles ya salieron y no las repite hasta agotar las de su tema.
 - Los dibujos son ilustraciones 3D de [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) (licencia MIT, ver `assets/emoji/LICENSE-fluent-emoji.txt`), incluidas en la app.

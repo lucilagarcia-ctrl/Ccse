@@ -141,8 +141,8 @@ Preguntas originales:
 
 ## 7. Cambios de la versión 1.2
 
-- **Voz más natural**: 1.075 frases grabadas con voces neuronales Piper (catalán "ona", castellano "mls_9972",
-  inglés británico), dentro de la app y sin internet. El catalán ya lo pronuncia una voz catalana, no una
+- **Voz más natural**: 1.075 frases grabadas con voces neuronales Piper (catalán "ona", castellano "carlfm",
+  inglés británico; las voces castellanas "mls" balbuceaban y se descartaron), dentro de la app y sin internet. El catalán ya lo pronuncia una voz catalana, no una
   castellana. Las frases que cambian cada partida (problemas con números) las lee la mejor voz del teléfono.
   Si se añaden preguntas, hay que volver a ejecutar `scripts/list-speech.ts` y `scripts/make-voice.py`
   (las pruebas avisan si falta alguna grabación).
