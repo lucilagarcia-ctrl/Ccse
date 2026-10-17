@@ -8,7 +8,7 @@ import { Flag } from './Flags';
 export const choiceText = (c: Choice, lang: Lang) => (typeof c.label === 'string' ? c.label : c.label?.[lang] ?? '');
 
 /** Dibuja una opción: emoji, bandera, reloj y/o texto corto. */
-export function ChoiceView({ choice, lang, size = 56 }: { choice: Choice; lang: Lang; size?: number }) {
+export function ChoiceView({ choice, lang, size = 56, compact = false }: { choice: Choice; lang: Lang; size?: number; compact?: boolean }) {
   const text = choiceText(choice, lang);
   return (
     <View style={styles.wrap}>
@@ -20,7 +20,12 @@ export function ChoiceView({ choice, lang, size = 56 }: { choice: Choice; lang: 
       ) : null}
       {choice.clock ? <Clock h={choice.clock.h} m={choice.clock.m} size={size * 1.4} /> : null}
       {text ? (
-        <Text style={[styles.text, { fontSize: text.length > 12 ? 22 : text.length > 5 ? 26 : 34 }]} numberOfLines={2} adjustsFontSizeToFit>
+        <Text
+          style={[styles.text, { fontSize: compact ? (text.length > 6 ? 15 : 19) : text.length > 12 ? 22 : text.length > 5 ? 26 : 34 }]}
+          numberOfLines={2}
+          adjustsFontSizeToFit
+          minimumFontScale={0.6}
+        >
           {text}
         </Text>
       ) : null}
