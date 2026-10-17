@@ -20,7 +20,10 @@ export function ResultScreen({ lang, correct, wrong, total, onAgain, onHome }: P
 
   useEffect(() => {
     play(won ? 'fanfare' : 'sad');
-    const timer = setTimeout(() => say(`${won ? t('winTitle', lang) : t('loseTitle', lang)} ${won ? ui.winText[lang] : ui.loseText[lang]}`, lang), 900);
+    const timer = setTimeout(() => {
+      say(won ? t('winTitle', lang) : t('loseTitle', lang), lang);
+      say(won ? ui.winText[lang] : ui.loseText[lang], lang, true);
+    }, 900);
     return () => clearTimeout(timer);
   }, [won, lang]);
 

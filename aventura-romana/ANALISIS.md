@@ -139,3 +139,14 @@ Preguntas originales:
 - **Imágenes 3D** (Microsoft Fluent Emoji, licencia MIT) en lugar de emojis. No se usan fotos de internet
   porque casi todas tienen derechos de autor y no tendrían un estilo uniforme.
 
+## 7. Cambios de la versión 1.2
+
+- **Voz más natural**: 1.075 frases grabadas con voces neuronales Piper (catalán "ona", castellano "mls_9972",
+  inglés británico), dentro de la app y sin internet. El catalán ya lo pronuncia una voz catalana, no una
+  castellana. Las frases que cambian cada partida (problemas con números) las lee la mejor voz del teléfono.
+  Si se añaden preguntas, hay que volver a ejecutar `scripts/list-speech.ts` y `scripts/make-voice.py`
+  (las pruebas avisan si falta alguna grabación).
+- **Carrera de cuadrigas**: los caballos empiezan alineados en la salida y, al llegar el ganador, los demás se
+  quedan donde están (antes acababan todos en la meta y no se veía quién había ganado).
+- **Memoria en iPhone**: ajuste del tamaño del texto de las cartas. Pendiente de confirmar con una captura.
+

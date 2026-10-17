@@ -2,6 +2,9 @@
 // variedad de juegos y sin opciones repetidas. Uso: npx tsx scripts/check-sessions.ts
 import { buildSession, markSeen, PASS_MARK, SESSION_SIZE } from '../src/questions/session';
 import { handWritten } from '../src/questions/content';
+import { facts } from '../src/questions/facts';
+import { voiceClips } from '../src/voiceClips';
+import { voiceKey } from '../src/voiceKey';
 
 let problems = 0;
 const fail = (msg: string) => { problems++; if (problems < 20) console.error('✗', msg); };
@@ -45,6 +48,14 @@ for (let round = 0; round < 50; round++) {
   if (worst > 2) fail(`una pregunta salió ${worst} veces en 20 partidas`);
   if (round === 0) console.log(`en 20 partidas seguidas: ${count.size} preguntas distintas, la que más se repite salió ${worst} veces`);
 }
+
+// Todas las preguntas escritas a mano y las curiosidades tienen su grabación en los 3 idiomas.
+let missingVoice = 0;
+for (const l of [...handWritten.map((q) => q.prompt), ...facts.map((f) => f.text)]) {
+  for (const lang of ['es', 'en', 'ca'] as const) if (!voiceClips[voiceKey(lang, l[lang])]) missingVoice++;
+}
+if (missingVoice) fail(`${missingVoice} frases sin grabación (ejecuta scripts/make-voice.py)`);
+else console.log(`grabaciones: ${Object.keys(voiceClips).length}, todas las preguntas y curiosidades cubiertas`);
 
 const ids = handWritten.map((q) => q.id);
 if (new Set(ids).size !== ids.length) fail('ids repetidos en content.ts');

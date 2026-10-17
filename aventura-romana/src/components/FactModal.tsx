@@ -16,7 +16,11 @@ export function FactModal({ fact, lang, muted, onClose }: { fact: Fact | null; l
     pop.setValue(0);
     play('fact');
     Animated.spring(pop, { toValue: 1, useNativeDriver: true, speed: 10, bounciness: 14 }).start();
-    if (!muted) setTimeout(() => say(`${ui.didYouKnow[lang]} ${fact.text[lang]}`, lang), 400);
+    if (!muted)
+      setTimeout(() => {
+        say(ui.didYouKnow[lang], lang);
+        say(fact.text[lang], lang, true);
+      }, 400);
   }, [fact, lang, muted, pop]);
 
   return (

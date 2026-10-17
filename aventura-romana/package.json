@@ -1,6 +1,6 @@
 {
   "name": "aventura-romana",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "index.ts",
   "dependencies": {
     "@expo-google-fonts/cinzel": "^0.4.2",
@@ -34,7 +34,7 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
-    "check": "tsx scripts/check-sessions.ts",
+    "check": "tsx --require ./scripts/asset-stub.cjs scripts/check-sessions.ts",
     "sounds": "node scripts/make-sounds.js"
   },
   "private": true

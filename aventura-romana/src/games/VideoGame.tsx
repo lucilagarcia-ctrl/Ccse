@@ -188,24 +188,47 @@ function CoinChest({ start, add, remove, onEnd }: { start: number; add: number; 
 const RACE_COLORS = ['🔴', '🔵', '🟢', '⚪'];
 
 /** Carrera de cuadrigas: 4 equipos (como en el Circo Máximo). Gana el color indicado. */
+const RACE_START = 12;
+const RACE_END = STAGE_W - 92; // el morro del caballo llega justo a la meta
+
 function Race({ winner, onEnd }: { winner: number; onEnd: () => void }) {
-  const [anims] = useState(() => RACE_COLORS.map(() => new Animated.Value(0)));
+  // Cada caballo empieza en la línea de salida (izquierda); sólo se mueven los caballos, no los carriles.
+  const [pos] = useState(() => RACE_COLORS.map(() => new Animated.Value(RACE_START)));
   useEffect(() => {
+    pos.forEach((p) => p.setValue(RACE_START));
     const durations = RACE_COLORS.map((_, i) => (i === winner ? 3000 : 3400 + Math.random() * 900));
-    Animated.parallel(
-      anims.map((a, i) => Animated.timing(a, { toValue: 1, duration: durations[i], easing: Easing.inOut(Easing.sin), useNativeDriver: true })),
-    ).start(() => onEnd());
-  }, [anims, winner, onEnd]);
+    const runs = pos.map((p, i) =>
+      Animated.timing(p, { toValue: RACE_END, duration: durations[i], easing: Easing.inOut(Easing.sin), useNativeDriver: false }),
+    );
+    // Pequeña pausa en la salida para que se vea a todos alineados antes de arrancar.
+    const t = setTimeout(() => {
+      runs.forEach((r, i) =>
+        r.start(({ finished }) => {
+          // Cuando llega el ganador, los demás se quedan donde están: así se ve quién ganó.
+          if (i === winner && finished) {
+            runs.forEach((other, j) => j !== winner && other.stop());
+            onEnd();
+          }
+        }),
+      );
+    }, 700);
+    return () => {
+      clearTimeout(t);
+      runs.forEach((r) => r.stop());
+    };
+  }, [pos, winner, onEnd]);
   return (
-    <View style={[StyleSheet.absoluteFill, { justifyContent: 'space-around', paddingVertical: 8 }]}>
+    <View style={StyleSheet.absoluteFill}>
+      <View style={styles.startLine} />
       <View style={styles.finish} />
-      {anims.map((a, i) => (
-        <Animated.View key={i} style={[styles.lane, { transform: [{ translateX: a.interpolate({ inputRange: [0, 1], outputRange: [0, STAGE_W - 90] }) }] }]}>
-          <View style={styles.horseRow}>
-            <Emoji char={RACE_COLORS[i]} size={22} />
+      <Emoji char="🏁" size={30} style={styles.flag} />
+      {RACE_COLORS.map((c, i) => (
+        <View key={i} style={[styles.lane, { top: 8 + i * 50 }]}>
+          <Animated.View style={[styles.horseRow, { left: pos[i] }]}>
+            <Emoji char={c} size={20} />
             <Emoji char="🐎" size={40} style={styles.horse} />
-          </View>
-        </Animated.View>
+          </Animated.View>
+        </View>
       ))}
     </View>
   );
@@ -250,9 +273,11 @@ const styles = StyleSheet.create({
   eagle: { position: 'absolute', top: 4, right: 18 },
   plus: { position: 'absolute', top: 10, left: 12, fontSize: 34 },
   minus: { position: 'absolute', top: 10, left: 12, fontSize: 34 },
+  startLine: { position: 'absolute', left: 8, top: 0, bottom: 0, width: 3, backgroundColor: '#fff' },
   finish: { position: 'absolute', right: 26, top: 0, bottom: 0, width: 8, backgroundColor: '#222', borderLeftWidth: 4, borderColor: '#fff', borderStyle: 'dashed' },
-  lane: { height: 44, justifyContent: 'center', borderBottomWidth: 2, borderColor: '#D9BF85' },
-  horseRow: { flexDirection: 'row', alignItems: 'center', gap: 2 },
+  flag: { position: 'absolute', right: 2, top: 2 },
+  lane: { position: 'absolute', left: 0, right: 0, height: 48, borderBottomWidth: 2, borderColor: '#D9BF85' },
+  horseRow: { position: 'absolute', top: 2, flexDirection: 'row', alignItems: 'center', gap: 2 },
   horse: { transform: [{ scaleX: -1 }] },
   patternCell: { width: 48, height: 48, borderRadius: 12, backgroundColor: colors.marble, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: colors.gold },
   patternHole: { borderStyle: 'dashed', borderColor: colors.purple, backgroundColor: '#F3E8FF' },

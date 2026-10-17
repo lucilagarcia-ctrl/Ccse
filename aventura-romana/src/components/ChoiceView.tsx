@@ -24,7 +24,8 @@ export function ChoiceView({ choice, lang, size = 56, compact = false }: { choic
         <EmojiText text={text} size={compact ? 24 : 34} textStyle={[styles.text, { fontSize: compact ? 15 : 24 }]} />
       ) : text ? (
         <Text
-          style={[styles.text, { fontSize: compact ? (text.length > 6 ? 15 : 19) : text.length > 12 ? 22 : text.length > 5 ? 26 : 34 }]}
+          // Ancho fijo para que iOS pueda achicar el texto (adjustsFontSizeToFit necesita un ancho).
+          style={[styles.text, compact && styles.fill, { fontSize: compact ? (text.length > 6 ? 15 : 19) : text.length > 12 ? 22 : text.length > 5 ? 26 : 34 }]}
           numberOfLines={2}
           adjustsFontSizeToFit
           minimumFontScale={0.6}
@@ -40,4 +41,5 @@ const styles = StyleSheet.create({
   wrap: { alignItems: 'center', justifyContent: 'center' },
   flag: { borderRadius: 6, overflow: 'hidden', borderWidth: 2, borderColor: '#0002' },
   text: { fontFamily: fonts.bodyBold, color: colors.ink, textAlign: 'center' },
+  fill: { alignSelf: 'stretch' },
 });
