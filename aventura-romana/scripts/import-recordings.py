@@ -132,22 +132,26 @@ for tanda in sorted({p['tanda'] for p in phrases}):
     ratios = sorted(d / ref[p['key']] for d, p in pairs)
     pace = ratios[len(ratios) // 2]
     odd = [p['n'] for d, p in pairs if not 0.45 < d / (ref[p['key']] * pace) < 2.0]
-    # Prueba fuerte: la duración de los trozos debe seguir el patrón del largo de cada frase
-    # (si estuviera corrido una frase, la correlación cae a ~0).
+    # Prueba fuerte: comparar la duración de cada trozo con la esperada para su frase. Alineado,
+    # el error es pequeño; si estuviera corrido una frase, el error crece mucho. (La correlación sola
+    # engaña cuando frases vecinas tienen largos parecidos.)
+    import math
     import statistics
-    lengths = [len(p['text']) for _, p in pairs]
     durs = [d for d, _ in pairs]
-    corr = statistics.correlation(durs, lengths)
-    shifted = max(statistics.correlation(durs[1:], lengths[:-1]), statistics.correlation(durs[:-1], lengths[1:]))
-    if (corr < 0.8 or corr - shifted < 0.3) and not force:
-        print(f'tanda {tanda}: el emparejamiento no es fiable (correlación {corr:.2f}, corrido {shifted:.2f}) — revisa repeticiones')
+    exp = [ref[p['key']] * pace for _, p in pairs]
+    err = lambda a, b: statistics.mean(math.log(x / y) ** 2 for x, y in zip(a, b))
+    aligned = err(durs, exp)
+    shifted = min(err(durs[1:], exp[:-1]), err(durs[:-1], exp[1:]))
+    corr = statistics.correlation(durs, [len(p['text']) for _, p in pairs])
+    if (corr < 0.8 or aligned > 0.5 * shifted) and not force:
+        print(f'tanda {tanda}: el emparejamiento no es fiable (error {aligned:.3f} alineado vs {shifted:.3f} corrido, correlación {corr:.2f}) — revisa repeticiones')
         ok = False
         continue
     if odd and not force:
         print(f'tanda {tanda}: los cortes no encajan cerca de las frases {odd} — ¿alguna repetida sin avisar? (o usa --forzar)')
         ok = False
         continue
-    print(f'tanda {tanda}: {len(items)} frases ✓ (correlación {corr:.2f})')
+    print(f'tanda {tanda}: {len(items)} frases ✓ (correlación {corr:.2f}; error {aligned:.3f} alineado vs {shifted:.3f} corrido)')
     if dry:
         continue
     for (s, e), p in zip(segments, expected):
