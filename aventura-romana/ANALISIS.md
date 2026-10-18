@@ -150,3 +150,10 @@ Preguntas originales:
   quedan donde están (antes acababan todos en la meta y no se veía quién había ganado).
 - **Memoria en iPhone**: ajuste del tamaño del texto de las cartas. Pendiente de confirmar con una captura.
 
+## 8. Cambios de la versión 1.3
+
+- **Voz en castellano grabada por la familia**: las 280 frases fijas en castellano (preguntas, curiosidades,
+  felicitaciones) son grabaciones caseras, cortadas y niveladas con `scripts/import-recordings.py`. El catalán
+  y el inglés siguen con voces neuronales Piper. Las frases con números que cambian cada partida las lee la
+  voz del teléfono.
+
