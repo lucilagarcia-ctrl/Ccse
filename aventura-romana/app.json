@@ -54,6 +54,9 @@
           "backgroundColor": "#9FD6F5"
         }
       ]
-    ]
+    ],
+    "experiments": {
+      "baseUrl": "/Ccse/jugar"
+    }
   }
 }

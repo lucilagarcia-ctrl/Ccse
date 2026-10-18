@@ -40,6 +40,11 @@ npm install
 npx expo start          # escanear el QR con Expo Go (iOS/Android), o pulsar "w" para verla en el navegador
 ```
 
+## Versión web (para probar sin instalar)
+
+**https://lucilagarcia-ctrl.github.io/Ccse/jugar/** — se abre en el navegador del ordenador o del móvil.
+Para actualizarla: `sh scripts/publish-web.sh` y subir la carpeta `jugar/` a `main`.
+
 ## Instaladores para iOS y Android
 
 Ver **[INSTALAR.md](INSTALAR.md)**: GitHub genera automáticamente el `.apk` (Android) y el `.ipa` (iOS).
