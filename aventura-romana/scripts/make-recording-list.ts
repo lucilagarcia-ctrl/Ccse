@@ -1,3 +1,4 @@
+/// <reference types="node" />
 // Prepara la lista numerada de frases en castellano para grabarlas a mano, en 6 tandas.
 // Uso: npx tsx --require ./scripts/asset-stub.cjs scripts/list-speech.ts > /tmp/frases.json
 //      npx tsx --require ./scripts/asset-stub.cjs scripts/make-recording-list.ts /tmp/frases.json
