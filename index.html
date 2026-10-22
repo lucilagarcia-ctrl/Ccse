@@ -152,12 +152,13 @@ function start(m) {
 
 function ask() {
   const q = ses.list[ses.i], n = ses.list.length;
+  ses.orden = shuffle(q.o.map((_, k) => k)); // opciones en orden aleatorio cada vez
   const tag = ses.m === 'examen' ? 'Simulacro' : ses.m === 'falladas' ? 'Repaso' : 'Tarea ' + q.t;
   app.innerHTML = `
     <div class="top"><button class="back" id="salir">← Salir</button><span class="count">${ses.i + 1} / ${n}</span></div>
     <div class="bar"><i style="width:${ses.i / n * 100}%"></i></div>
     <div class="q"><p class="eyebrow">${tag} · Pregunta ${q.id}</p><h2>${esc(q.q)}</h2></div>
-    <div class="opts">${q.o.map((o, k) => `<button class="opt" data-k="${k}"><span class="k">${'abc'[k]}</span><span>${esc(o)}</span></button>`).join('')}</div>
+    <div class="opts">${ses.orden.map((k, pos) => `<button class="opt" data-k="${k}"><span class="k">${'abc'[pos]}</span><span>${esc(q.o[k])}</span></button>`).join('')}</div>
     <p class="verdict" id="verdict" aria-live="polite"></p>
     <div id="after"></div>`;
   document.getElementById('salir').onclick = () => (ses.i > 0 ? results(true) : home());
@@ -169,11 +170,12 @@ function answer(k) {
   const q = ses.list[ses.i], ok = k === q.r;
   const btns = app.querySelectorAll('.opt');
   btns.forEach(b => b.disabled = true);
-  btns[q.r].classList.add('ok');
-  if (!ok) btns[k].classList.add('bad');
+  const btn = i => app.querySelector(`.opt[data-k="${i}"]`);
+  btn(q.r).classList.add('ok');
+  if (!ok) btn(k).classList.add('bad');
   const v = document.getElementById('verdict');
   v.className = 'verdict ' + (ok ? 'ok' : 'bad');
-  v.textContent = ok ? '¡Correcto!' : 'Incorrecto. La respuesta es la ' + 'abc'[q.r] + '.';
+  v.textContent = ok ? '¡Correcto!' : 'Incorrecto. La respuesta es la ' + 'abc'[ses.orden.indexOf(q.r)] + '.';
   if (!mem.vistas.includes(q.id)) mem.vistas.push(q.id);
   if (ok) { ses.ok++; if (ses.m === 'falladas') mem.falladas = mem.falladas.filter(id => id !== q.id); }
   else { ses.errores.push(q); if (!mem.falladas.includes(q.id)) mem.falladas.push(q.id); }
